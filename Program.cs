@@ -18,7 +18,7 @@ class Program
     static async Task Main(string[] args)
     {
         if (args.Length == 0){
-            Console.WriteLine("Please specify Harvest, Forecast, or Timetastic as the first argument");
+            Console.WriteLine("Please specify harvest, forecast, or timetastic as the first argument");
             return;
         }
 
@@ -28,6 +28,10 @@ class Program
                 break;
             case "forecast":
                 await Run("https://api.forecastapp.com/projects/3581108", CredentialsDictionary.forecast);
+                break;
+            case "timetastic":
+                Console.WriteLine("Timetastic not yet implemented");
+                // await Run("https://api.forecastapp.com/projects/3581108", CredentialsDictionary.forecast);
                 break;
             default:
                 Console.WriteLine("Invalid argument, please specify harvest, forecast, or timetastic as the first argument");
