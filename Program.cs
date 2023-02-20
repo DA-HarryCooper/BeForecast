@@ -22,8 +22,7 @@ class Program
             return;
         }
 
-        switch (args[0])
-        {
+        switch (args[0]){
             case "harvest":
                 await Run("https://api.harvestapp.com/v2/users/me", CredentialsDictionary.harvest);
                 break;
