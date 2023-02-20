@@ -27,7 +27,7 @@ class Program
                 await Run("https://api.harvestapp.com/v2/users/me", CredentialsDictionary.harvest);
                 break;
             case "forecast":
-                await Run("https://api.forecastapp.com/projects/3581108", CredentialsDictionary.forecast);
+                await Run("https://api.forecastapp.com/projects/", CredentialsDictionary.forecast);
                 break;
             case "timetastic":
                 Console.WriteLine("Timetastic not yet implemented");
