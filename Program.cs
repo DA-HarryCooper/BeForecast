@@ -1,20 +1,4 @@
-﻿HttpClient harvestClient = new();
-HttpClient forecastClient = new();
-harvestClient.DefaultRequestHeaders.Accept.Clear();
-forecastClient.DefaultRequestHeaders.Accept.Clear();
-foreach (var (key, value) in CredentialsDictionary.harvest) harvestClient.DefaultRequestHeaders.Add(key, value);
-foreach (var (key, value) in CredentialsDictionary.forecast) forecastClient.DefaultRequestHeaders.Add(key, value);
-await ProcessRepositoriesAsync(harvestClient, "https://api.harvestapp.com/v2/users/me");
-await ProcessRepositoriesAsync(forecastClient, "https://api.forecastapp.com/projects/3581108");
-
-static async Task ProcessRepositoriesAsync(HttpClient client, string url)
-{
-    Console.WriteLine("ProcessRepositoriesAsync");
-    var json = await client.GetStringAsync(url);
-    Console.Write(json);
-}
-
-static class CredentialsDictionary
+﻿static class CredentialsDictionary
 {
     static public Dictionary<string, string> harvest = new() {
         {"User-Agent", Credentials.USER_AGENT},
@@ -29,15 +13,26 @@ static class CredentialsDictionary
     };
 }
 
-// class Program
-// {
-//     static void Main(string[] args)
-//     {
-//         Run();
-//     }
+class Program
+{
+    static async Task Main(string[] args)
+    {
+        await Run();
+    }
 
-//     static async void Run()
-//     {
-//         Console.WriteLine("Run");
-//     }
-// }
+    static async Task Run()
+    {
+        HttpClient harvestClient = new();
+        HttpClient forecastClient = new();
+        await HitApi(harvestClient, CredentialsDictionary.harvest, "https://api.harvestapp.com/v2/users/me");
+        await HitApi(forecastClient, CredentialsDictionary.forecast, "https://api.forecastapp.com/projects/3581108");
+    }
+
+    static async Task HitApi(HttpClient client, Dictionary<string, string> creds, string url)
+    {
+        client.DefaultRequestHeaders.Accept.Clear();
+        foreach (var (key, value) in creds) client.DefaultRequestHeaders.Add(key, value);
+        var json = await client.GetStringAsync(url);
+        Console.Write(json);
+    }
+}
