@@ -31,7 +31,6 @@ class Program
                 break;
             case "timetastic":
                 Console.WriteLine("Timetastic not yet implemented");
-                // await Run("https://api.forecastapp.com/projects/3581108", CredentialsDictionary.forecast);
                 break;
             default:
                 Console.WriteLine("Invalid argument, please specify harvest, forecast, or timetastic as the first argument");
