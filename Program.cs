@@ -17,15 +17,29 @@ class Program
 {
     static async Task Main(string[] args)
     {
-        await Run();
+        if (args.Length == 0){
+            Console.WriteLine("Please specify Harvest, Forecast, or Timetastic as the first argument");
+            return;
+        }
+
+        switch (args[0])
+        {
+            case "harvest":
+                await Run("https://api.harvestapp.com/v2/users/me", CredentialsDictionary.harvest);
+                break;
+            case "forecast":
+                await Run("https://api.forecastapp.com/projects/3581108", CredentialsDictionary.forecast);
+                break;
+            default:
+                Console.WriteLine("Invalid argument, please specify harvest, forecast, or timetastic as the first argument");
+                break;
+        };
     }
 
-    static async Task Run()
+    static async Task Run(string url, Dictionary<string, string> creds)
     {
-        HttpClient harvestClient = new();
-        HttpClient forecastClient = new();
-        await HitApi(harvestClient, CredentialsDictionary.harvest, "https://api.harvestapp.com/v2/users/me");
-        await HitApi(forecastClient, CredentialsDictionary.forecast, "https://api.forecastapp.com/projects/3581108");
+        HttpClient client = new();
+        await HitApi(client, creds, url);
     }
 
     static async Task HitApi(HttpClient client, Dictionary<string, string> creds, string url)
