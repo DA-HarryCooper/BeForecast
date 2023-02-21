@@ -15,7 +15,8 @@
                 await Forecast.Run("https://api.forecastapp.com/projects", CredentialsDictionary.forecast);
                 break;
             case "timetastic":
-                Timetastic.GetHolidays();
+                Timetastic timetastic = new Timetastic();
+                timetastic.GetHolidays();
                 // await Timetastic.Run("https://app.timetastic.co.uk/api/holidays", CredentialsDictionary.timetastic);
                 break;
             default:
