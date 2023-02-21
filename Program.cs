@@ -9,15 +9,16 @@
 
         switch (args[0]){
             case "harvest":
-                await Harvest.Run("https://api.harvestapp.com/v2/users/me", CredentialsDictionary.harvest);
+                Harvest harvest = new();
+                await harvest.Run("https://api.harvestapp.com/v2/users/me", CredentialsDictionary.harvest);
                 break;
             case "forecast":
-                await Forecast.Run("https://api.forecastapp.com/projects", CredentialsDictionary.forecast);
+                Forecast forecast = new();
+                await forecast.Run("https://api.forecastapp.com/projects", CredentialsDictionary.forecast);
                 break;
             case "timetastic":
                 Timetastic timetastic = new Timetastic();
-                timetastic.GetHolidays();
-                // await Timetastic.Run("https://app.timetastic.co.uk/api/holidays", CredentialsDictionary.timetastic);
+                await timetastic.Run("https://app.timetastic.co.uk/api/holidays", CredentialsDictionary.timetastic);
                 break;
             default:
                 Console.WriteLine("Invalid argument, please specify harvest, forecast, or timetastic as the first argument");
@@ -28,13 +29,13 @@
 
 class ToolInterface 
 {
-    public static async Task Run(string url, Dictionary<string, string> creds)
+    public async Task Run(string url, Dictionary<string, string> creds)
     {
         HttpClient client = new();
-        await HitApi(client, creds, url);
+        await DoWork(client, creds, url);
     }
 
-    static async Task HitApi(HttpClient client, Dictionary<string, string> creds, string url)
+    public virtual async Task DoWork(HttpClient client, Dictionary<string, string> creds, string url)
     {
         client.DefaultRequestHeaders.Accept.Clear();
         foreach (var (key, value) in creds) client.DefaultRequestHeaders.Add(key, value);

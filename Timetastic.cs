@@ -6,42 +6,8 @@ static partial class CredentialsDictionary
     {
         {"Authorization", Credentials.TIMETASTIC_AUTH}
     };
-}
 
-public class Holiday
-{
-    public int id { get; set; }
-    public string? startDate { get; set; }
-    public string? startType { get; set; }
-    public string? endDate { get; set; }
-    public string? endType { get; set; }
-    public int userId { get; set; }
-    public string? userName { get; set; }
-    public int requestedById { get; set; }
-    public int leaveTypeId { get; set; }
-    public int duration { get; set; }
-    public int deduction { get; set; }
-    public int actionerId { get; set; }
-    public string? createdAt { get; set; }
-    public string? updatedAt { get; set; }
-    public string? reason { get; set; }
-    public string? declineReason { get; set; }
-    public string? status { get; set; }
-    public bool autoApproved { get; set; }
-    public string? bookingUnit { get; set; }
-    public string? leaveType { get; set; }
-}
-
-public class Holidays
-{
-    public Holiday[]? holidays { get; set; }
-}
-
-class Timetastic : ToolInterface 
-{
-    public void GetHolidays()
-    {
-        string testJsonString = @"{
+    static public string dummyData = @"{
             ""holidays"": [
             {
                 ""id"": 101010,
@@ -87,12 +53,50 @@ class Timetastic : ToolInterface
                 ""bookingUnit"": ""Days"",
                 ""leaveType"": ""Annual Leave""
             }]}";
+}
 
-        Holidays holidays = JsonSerializer.Deserialize<Holidays>(testJsonString);
+struct Holiday
+{
+    public Int32 id { get; set; }
+    public string? startDate { get; set; }
+    public string? startType { get; set; }
+    public string? endDate { get; set; }
+    public string? endType { get; set; }
+    public int userId { get; set; }
+    public string? userName { get; set; }
+    public int requestedById { get; set; }
+    public int leaveTypeId { get; set; }
+    public float duration { get; set; }
+    public float deduction { get; set; }
+    public int actionerId { get; set; }
+    public string? createdAt { get; set; }
+    public string? updatedAt { get; set; }
+    public string? reason { get; set; }
+    public string? declineReason { get; set; }
+    public string? status { get; set; }
+    public bool autoApproved { get; set; }
+    public string? bookingUnit { get; set; }
+    public string? leaveType { get; set; }
+}
+
+struct Holidays
+{
+    public Holiday[]? holidays { get; set; }
+}
+
+class Timetastic : ToolInterface 
+{
+    public override async Task DoWork(HttpClient client, Dictionary<string, string> creds, string url)
+    {
+        client.DefaultRequestHeaders.Accept.Clear();
+        foreach (var (key, value) in creds) client.DefaultRequestHeaders.Add(key, value);
+        var json = await client.GetStringAsync(url);
+        ProcessHolidays(json);
+    }
+
+    public void ProcessHolidays(string json)
+    {
+        Holidays holidays = JsonSerializer.Deserialize<Holidays>(json);
         Console.WriteLine(holidays.holidays[0].id);
-        // Console.WriteLine($"TemperatureCelsius: {holiday?.TemperatureCelsius}");
-        // Console.WriteLine($"Summary: {weatherForecast?.Summary}");
-
-    // GET https://app.timetastic.co.uk/api/holidays
     }
 }
