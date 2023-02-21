@@ -14,7 +14,7 @@
                 break;
             case "forecast":
                 Forecast forecast = new();
-                await forecast.Run("https://api.forecastapp.com/projects", CredentialsDictionary.forecast);
+                await forecast.Run("https://api.forecastapp.com/people", CredentialsDictionary.forecast);
                 break;
             case "timetastic":
                 Timetastic timetastic = new Timetastic();
@@ -40,5 +40,6 @@ class ToolInterface
         client.DefaultRequestHeaders.Accept.Clear();
         foreach (var (key, value) in creds) client.DefaultRequestHeaders.Add(key, value);
         var json = await client.GetStringAsync(url);
+        
     }
 }

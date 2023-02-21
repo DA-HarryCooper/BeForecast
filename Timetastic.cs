@@ -91,13 +91,12 @@ class Timetastic : ToolInterface
         client.DefaultRequestHeaders.Accept.Clear();
         foreach (var (key, value) in creds) client.DefaultRequestHeaders.Add(key, value);
         var json = await client.GetStringAsync(url);
-        ProcessHolidays(json);
+        ReduceHolidays(json);
     }
 
-    public void ProcessHolidays(string json)
+    public void ReduceHolidays(string json)
     {
         Holidays holidays = JsonSerializer.Deserialize<Holidays>(json);
-        Console.WriteLine(holidays.holidays[0].id);
 
         List<Holiday> approvedHolidays = new();
 
@@ -105,6 +104,13 @@ class Timetastic : ToolInterface
             if (holiday.status == "Approved" && DateTime.Compare(holiday.startDate, DateTime.Now) > 0) approvedHolidays.Add(holiday);
         }
 
-        Console.WriteLine(approvedHolidays.Count);
+        PushToForecast(approvedHolidays);
+    }
+
+    public void PushToForecast(List<Holiday> approvedHolidays)
+    {
+        foreach (Holiday holiday in approvedHolidays){
+            Forecast.PostTimeOff(holiday);
+        }
     }
 }

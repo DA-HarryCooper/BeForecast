@@ -18,5 +18,9 @@ static partial class CredentialsDictionary
 
 class Forecast : ToolInterface
 {
-    
+    public static async void PostTimeOff(Holiday holiday)
+    {
+        Console.WriteLine($"Posting time off for {holiday.userName} from {holiday.startDate} to {holiday.endDate}");
+        
+    }
 }
