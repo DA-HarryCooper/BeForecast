@@ -58,9 +58,9 @@ static partial class CredentialsDictionary
 struct Holiday
 {
     public Int32 id { get; set; }
-    public string? startDate { get; set; }
+    public DateTime startDate { get; set; }
     public string? startType { get; set; }
-    public string? endDate { get; set; }
+    public DateTime endDate { get; set; }
     public string? endType { get; set; }
     public int userId { get; set; }
     public string? userName { get; set; }
@@ -98,5 +98,13 @@ class Timetastic : ToolInterface
     {
         Holidays holidays = JsonSerializer.Deserialize<Holidays>(json);
         Console.WriteLine(holidays.holidays[0].id);
+
+        List<Holiday> approvedHolidays = new();
+
+        foreach (Holiday holiday in holidays.holidays){
+            if (holiday.status == "Approved" && DateTime.Compare(holiday.startDate, DateTime.Now) > 0) approvedHolidays.Add(holiday);
+        }
+
+        Console.WriteLine(approvedHolidays.Count);
     }
 }

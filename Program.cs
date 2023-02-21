@@ -40,6 +40,5 @@ class ToolInterface
         client.DefaultRequestHeaders.Accept.Clear();
         foreach (var (key, value) in creds) client.DefaultRequestHeaders.Add(key, value);
         var json = await client.GetStringAsync(url);
-        Console.Write(json);
     }
 }
