@@ -1,19 +1,4 @@
-﻿static class CredentialsDictionary
-{
-    static public Dictionary<string, string> harvest = new() {
-        {"User-Agent", Credentials.USER_AGENT},
-        {"Harvest-Account-ID", Credentials.HARVEST_ACCOUNT_ID},
-        {"Authorization", Credentials.AUTHORIZATION}
-    };
-
-    static public Dictionary<string, string> forecast = new() {
-        {"User-Agent", Credentials.USER_AGENT},
-        {"Forecast-Account-ID", Credentials.FORECAST_ACCOUNT_ID},
-        {"Authorization", Credentials.AUTHORIZATION}
-    };
-}
-
-class Program
+﻿class Program
 {
     static async Task Main(string[] args)
     {
@@ -24,10 +9,10 @@ class Program
 
         switch (args[0]){
             case "harvest":
-                await Run("https://api.harvestapp.com/v2/users/me", CredentialsDictionary.harvest);
+                await Harvest.Run("https://api.harvestapp.com/v2/users/me", CredentialsDictionary.harvest);
                 break;
             case "forecast":
-                await Run("https://api.forecastapp.com/projects", CredentialsDictionary.forecast);
+                await Forecast.Run("https://api.forecastapp.com/projects", CredentialsDictionary.forecast);
                 break;
             case "timetastic":
                 Console.WriteLine("Timetastic not yet implemented");
@@ -37,8 +22,11 @@ class Program
                 break;
         };
     }
+}
 
-    static async Task Run(string url, Dictionary<string, string> creds)
+class ToolInterface 
+{
+    public static async Task Run(string url, Dictionary<string, string> creds)
     {
         HttpClient client = new();
         await HitApi(client, creds, url);
