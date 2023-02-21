@@ -3,7 +3,7 @@ static partial class CredentialsDictionary
     static public Dictionary<string, string> harvest = new() {
         {"User-Agent", Credentials.USER_AGENT},
         {"Harvest-Account-ID", Credentials.HARVEST_ACCOUNT_ID},
-        {"Authorization", Credentials.AUTHORIZATION}
+        {"Authorization", Credentials.HARVEST_AUTH}
     };
 
     static public string[] getHarvestEndPoints = new string[] 

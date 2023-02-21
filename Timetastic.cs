@@ -2,7 +2,10 @@ using System.Text.Json;
 
 static partial class CredentialsDictionary
 {
-
+    static public Dictionary<string, string> timetastic = new() 
+    {
+        {"Authorization", Credentials.TIMETASTIC_AUTH}
+    };
 }
 
 struct Holiday
@@ -36,7 +39,7 @@ struct Holidays
 
 class Timetastic : ToolInterface 
 {
-    public Holidays GetHolidays()
+    static public void GetHolidays()
     {
         string testJsonString = @"{
             ""holidays"": [
@@ -64,8 +67,7 @@ class Timetastic : ToolInterface
             }]}";
 
         Holidays holidays = JsonSerializer.Deserialize<Holidays>(testJsonString);
-
-        return holidays;
+        Console.WriteLine(holidays.holidays[0]);
         // Console.WriteLine($"TemperatureCelsius: {holiday?.TemperatureCelsius}");
         // Console.WriteLine($"Summary: {weatherForecast?.Summary}");
 

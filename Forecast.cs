@@ -4,7 +4,7 @@ static partial class CredentialsDictionary
     {
         {"User-Agent", Credentials.USER_AGENT},
         {"Forecast-Account-ID", Credentials.FORECAST_ACCOUNT_ID},
-        {"Authorization", Credentials.AUTHORIZATION}
+        {"Authorization", Credentials.FORECAST_AUTH}
     };
 
     static public string[] getForecastEndPoints = new string[] 
