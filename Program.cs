@@ -15,7 +15,9 @@
                 await Forecast.Run("https://api.forecastapp.com/projects", CredentialsDictionary.forecast);
                 break;
             case "timetastic":
-                Console.WriteLine("Timetastic not yet implemented");
+                Timetastic timetastic = new();
+                Holidays holidays = timetastic.GetHolidays();
+                Console.WriteLine(holidays.holidays[0].startDate);
                 break;
             default:
                 Console.WriteLine("Invalid argument, please specify harvest, forecast, or timetastic as the first argument");
